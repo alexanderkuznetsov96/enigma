@@ -27,6 +27,7 @@ public:
 	void RecursiveBacktrack(int startX, int startY);
 	// display the maze
 	void printMaze();
+	void printOutput();
 	// turns the maze into a boolean array
 	bool** outputMaze();
 
@@ -36,6 +37,7 @@ private:
 	int** maze;		// the pointer to the maze
 	int* storage;	// storage for easy access to maze
 	bool** output;
+	bool* outStorage;
 };
 
 #endif /* MAZE_H_ */
