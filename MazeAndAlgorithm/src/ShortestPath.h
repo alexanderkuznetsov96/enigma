@@ -1,24 +1,25 @@
-//
-// Created by Ken on 11/7/2016.
-//
-using namespace std;
 #pragma once
-#include "findNextNode.h"
 #include <math.h>
 #include <vector>
-#include "Vector3.h"
+#include "findNextNode.h"
+
+using namespace std;
+
 //size of maze, right now I have initialized it at 2
 #define sizeOfMaze 2;
 
 class ShortestPath{
 public:
+    //There will be two lists in this algorithm. The first list will have all the nodes its currently checking. This list
+    // will contain all the adjacent nodes to the current node. It will take the best candidate. The second
+    //list would contain the nodes that we have already visited and checked
     ShortestPath(void);
     //has start goal been initialized
     bool optimalStartingNode;
     //has reached the final destination
     bool optimalDestinationNode;
-    void FindPath(Vector3 currentPositionofEnemy, Vector3 destinationPosition);
-    vector nextPositionFromList();
+    void FindPath(Vector currentPositionofEnemy, Vector destinationPosition);
+    Vector nextPositionFromList();
 
     void initializeInitialList(){
         initialList.clear();
@@ -33,16 +34,16 @@ public:
     }
 
 private:
-    findNextNode *getNode;
-    findNextNode *startNode;
-    findNextNode *destinationNode;
+    findNextNode* getNode();
+    findNextNode* startNode;
+    findNextNode* destinationNode;
     vector<findNextNode*> initialList;
     vector<findNextNode*> visitedList;
     //dynamic so use a vector here
-    vector<vector*> nextNodeForPathList;
+    vector<Vector*> nextNodeForPathList; //next node that will be added to the list for the most optimal path
     void startingNodeAndDestinationNode(findNextNode start, findNextNode destination);
     //see if node is in initial list
     void checkCurrentNode(int cost, int x, int z, findNextNode *parent);
-    void findPath();
+    void keepOnFindingthePath();
 };
 
