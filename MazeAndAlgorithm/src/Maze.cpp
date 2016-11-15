@@ -9,9 +9,11 @@ using namespace std;
 
 // main function for testing
 int main(){
-	Maze maze(30); // set to any desired size
+	Maze maze(5); // set to any desired size
 	maze.RecursiveBacktrack(0, 0); // starts from top left corner
 	maze.printMaze();
+	maze.outputMaze();
+	maze.printOutput();
 	return 0;
 }
 
@@ -24,28 +26,62 @@ Maze::Maze(int size) {
 	// each "row" points to a section of the
 	for (int i = 0; i < size; i++)
 		maze[i] = storage + size * i;
+
+	int outSize = size * 2;
+	output = new bool*[outSize];
+	outStorage = new bool[(outSize+1) * outSize];
+	for (int i = 0; i < (outSize+1) * outSize; i++)
+		outStorage[i] = false;
+	for (int i = 0; i < outSize; i++)
+		output[i] = outStorage + (outSize+1) * i;
 }
 
+// returns the output, a grid that can be used to interpret the maze as
+// empty space or wall, false reps wall, true reps empty space
 bool** Maze::outputMaze() {
-	if(size == 0)
-		return NULL;
-	output = new bool*[size*2];
-	for(int i = 0; i < size*2; i++){
-		//output[i] = new bool*[size*2+1];
+	for(int y = 0; y < size; y++){
+		output[y*2][0] = false;
+		for(int x = 0; x < size; x++){
+			if(y >= size/2){
+				if((maze[y][x] & S) !=  0)
+					output[y*2+1][x*2+1] = true;
+				if((maze[y][x] & W) !=  0)
+					output[y*2][x*2] = true;
+				if((maze[y][x] & E) !=  0)
+					output[y*2][x*2+1] = true;
+				if((maze[y][x] & N) != 0)
+					output[y*2][x*2+1] = true;
+			}
+			else{
+				if((maze[y][x] & S) !=  0)
+					output[y*2+1][x*2+1] = true;
+				if((maze[y][x] & E) !=  0)
+					output[y*2+1][x*2+1] = true;
+				if((maze[y][x] & W) !=  0)
+					output[y*2+1][x*2] = true;
+				if((maze[y][x] & N) != 0)
+					output[y*2][x*2+1] = true;
+			}
+		}
+		output[y][size*2] = false;
 	}
-	for(int i = 0; i < this->size; i++){
-		for(int j = 0; j < this->size; j++){
-			// do stuff here
+	return output;
+}
+
+void Maze::printOutput(){
+	for(int i = 0; i < size*2; i++){
+		for(int j = 0; j < size*2+1; j++){
+			cout << ((output[i][j])?" ":"0");
 		}
 		cout << endl;
 	}
-	return NULL;
+	cout << endl;
 }
 
 void Maze::printMaze() {
 	for(int i = 0; i < this->size; i++){
 		for(int j = 0; j < this->size; j++){
-			cout << (this->maze[i])[j] << "\t";
+			cout << maze[i][j] << "\t";
 		}
 		cout << endl;
 	}
@@ -63,14 +99,14 @@ void Maze::printMaze() {
 		cout << "|";
 		for(int x = 0; x < size; x++) {
 			// if bitwise AND gives 0 then there is no path to the south
-			if((maze[x][y] & S) !=  0)
+			if((maze[y][x] & S) !=  0)
 				cout << " ";
 			else
 				cout << "_";
 			// if bitwise ANd gives 0 then there is no path to the east
-			if((maze[x][y] & E) != 0){
+			if((maze[y][x] & E) != 0){
 				// if this location or the one directly south have a southern path
-				if (((maze[x][y] | maze[x + 1][y]) & S) != 0)
+				if (((maze[y][x] | maze[y][x+1]) & S) != 0)
 					cout << " ";
 				else
 					cout << "_";
@@ -80,6 +116,7 @@ void Maze::printMaze() {
 		}
 		cout << endl;
 	}
+	cout << endl;
 }
 
 // starts at a maze location and carves a path until hitting maze bounds or a "wall"
@@ -100,10 +137,10 @@ void Maze::RecursiveBacktrack(int startX, int startY) {
 		// check if the maze location is valid
 		if (((nextX < size) & (nextX >= 0)) & ((nextY < size) & (nextY >= 0))) {
 			//check if maze is not visited at the next location
-			if (maze[nextX][nextY] == 0) {
+			if (maze[nextY][nextX] == 0) {
 				// bitwise OR the value with the direction
-				maze[startX][startY] = (int)((int)maze[startX][startY] | (int)directions[i]);
-				maze[nextX][nextY] = (int)((int)maze[nextX][nextY] | (int)OppD[directions[i]]);
+				maze[startY][startX] = (int)((int)maze[startY][startX] | (int)directions[i]);
+				maze[nextY][nextX] = (int)((int)maze[nextY][nextX] | (int)OppD[directions[i]]);
 				RecursiveBacktrack(nextX, nextY); // recursive call starting from next position
 			}
 		}
