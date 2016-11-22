@@ -8,15 +8,6 @@
 #include "stdlib.h"
 using namespace std;
 
-// main function for testing
-int main(){
-	Maze maze(5); // set to any desired size
-	//maze.RecursiveBacktrack(0, 0); // starts from top left corner
-	maze.printMaze();
-	maze.outputMaze();
-	return 0;
-}
-
 Maze::Maze(int size) {
 	srand(time(NULL));
 	this->size = size;

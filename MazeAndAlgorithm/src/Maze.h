@@ -17,12 +17,12 @@
 enum {N=1,E=4,S=2,W=8};
 //			  {0, 1, 2, 3, 4, 5, 6, 7, 8}
 //            {0, N, S, 0, E, 0, 0, 0, W}
-int DirX[9] = {0, 0, 0, 0, 1, 0, 0, 0, -1};	// x direction, positive is east
-int DirY[9] = {0, -1, 1, 0, 0, 0, 0, 0, 0};	// y direction, positive is south
-int OppD[9] = {0, S, N, 0, W, 0, 0, 0, E};	// opposite
 
 class Maze {
 public:
+	int DirX[9] = {0, 0, 0, 0, 1, 0, 0, 0, -1};	// x direction, positive is east
+	int DirY[9] = {0, -1, 1, 0, 0, 0, 0, 0, 0};	// y direction, positive is south
+	int OppD[9] = {0, S, N, 0, W, 0, 0, 0, E};	// opposite
 	Maze(int size);
 	// fills the maze using recursive backtracking
 	void RecursiveBacktrack(int startX, int startY);
