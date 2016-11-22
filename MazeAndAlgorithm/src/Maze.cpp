@@ -5,6 +5,7 @@
  *      Author: Sasha
  */
 #include "Maze.h"
+#include "stdlib.h"
 using namespace std;
 
 // main function for testing

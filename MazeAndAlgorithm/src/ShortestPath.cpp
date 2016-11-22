@@ -1,6 +1,8 @@
+#pragma once
 #include <iostream>
-#include "findNextNode.h"
 #include "ShortestPath.h"
+#include "FindNextNode.h"
+#include "Vector.h"
 
 using namespace std;
 
@@ -35,13 +37,13 @@ void ShortestPath::FindPath(Vector currentPositionofEnemy, Vector destinationPos
         nextNodeForPathList.clear();
 
         //Start
-        findNextNode start;
+        FindNextNode start;
         //get the x and z coordinate value
         start.xCoordinates = currentPositionofEnemy.x;
         start.zCoordinates = currentPositionofEnemy.z;
 
         //Destination, we want to know the destination for the heuristic, find the destination, then find the shortest path
-        findNextNode destination;
+        FindNextNode destination;
         //get the x and z coordinate value
         destination.xCoordinates = destinationPosition.x;
         destination.zCoordinates = destinationPosition.z;
@@ -57,12 +59,12 @@ void ShortestPath::FindPath(Vector currentPositionofEnemy, Vector destinationPos
     }//end else
 }
 
-void ShortestPath::startingNodeAndDestinationNode(findNextNode start, findNextNode destination) {
+void ShortestPath::startingNodeAndDestinationNode(FindNextNode start, FindNextNode destination) {
     //Pretty self explanatory, we are initializing the start and destination nodes here
 
     //findNextNode(x, z, parent)
-    startNode = new findNextNode(start.xCoordinates, start.zCoordinates, 0);
-    destinationNode = new findNextNode(destination.xCoordinates, destination.zCoordinates, &destination);
+    startNode = new FindNextNode(start.xCoordinates, start.zCoordinates, 0);
+    destinationNode = new FindNextNode(destination.xCoordinates, destination.zCoordinates, &destination);
 
     //We are just initializing everything here, start nodes a pointer and we are getting distancefromcurrentnode, etc.
     startNode->distanceFromCurrentNode = 0;
@@ -75,13 +77,13 @@ void ShortestPath::startingNodeAndDestinationNode(findNextNode start, findNextNo
 
 }
 
-findNextNode* ShortestPath::getNode(){
+FindNextNode* ShortestPath::getNode(){
 
     //Set it nice and big because the lower the sum the higher priority. The sum will get replaced in the list if it is smaller
     //So we set this nice and big so it will be replaced later
     int optimalSum = 9999999; //set this to infinity*************
     int nodeIndex = 0;
-    findNextNode* nextNode = NULL;
+    FindNextNode* nextNode = NULL;
 
     for(int i = 0; i < initialList.size(); i++){
         //If get sum is less than optimal sum then this means that it is the higher priority and we will want to take this
@@ -106,7 +108,7 @@ findNextNode* ShortestPath::getNode(){
     return nextNode;
 }
 
-void ShortestPath::checkCurrentNode(int cost, int x, int z, findNextNode *parent) {
+void ShortestPath::checkCurrentNode(int cost, int x, int z, FindNextNode *parent) {
     //We wanna be looking at the adjacent nodes to the current node. We will look at it like this
     //First condidtion is if we hit a wall then bullocks.
     /*
@@ -115,7 +117,7 @@ void ShortestPath::checkCurrentNode(int cost, int x, int z, findNextNode *parent
         return;
     }
     */
-    findNextNode* newNode = new findNextNode(x, z, parent);
+    FindNextNode* newNode = new FindNextNode(x, z, parent);
     newNode->distanceFromCurrentNode = cost;
     newNode->heuristicDistance = parent->currentNodetoCurrentTarget(destinationNode);
     int whereWeAtInVisitedList = z * sizeOfMaze + x;
@@ -146,8 +148,8 @@ void ShortestPath::checkCurrentNode(int cost, int x, int z, findNextNode *parent
 
 void ShortestPath::keepOnFindingthePath() {
     //Keep on finding the next node to throw into the path
-    findNextNode* thisCell = getNode();
-    findNextNode* path;
+    FindNextNode* thisCell = getNode();
+    FindNextNode* path;
 
     if(initialList.empty()){
         //dont need to go through it cause the list is empty....

@@ -1,7 +1,8 @@
 #pragma once
 #include <math.h>
 #include <vector>
-#include "findNextNode.h"
+#include "FindNextNode.h"
+#include "Vector.h"
 
 using namespace std;
 
@@ -34,16 +35,16 @@ public:
     }
 
 private:
-    findNextNode* getNode();
-    findNextNode* startNode;
-    findNextNode* destinationNode;
-    vector<findNextNode*> initialList;
-    vector<findNextNode*> visitedList;
+    FindNextNode* getNode();
+    FindNextNode* startNode;
+    FindNextNode* destinationNode;
+    vector<FindNextNode*> initialList;
+    vector<FindNextNode*> visitedList;
     //dynamic so use a vector here
     vector<Vector*> nextNodeForPathList; //next node that will be added to the list for the most optimal path
-    void startingNodeAndDestinationNode(findNextNode start, findNextNode destination);
+    void startingNodeAndDestinationNode(FindNextNode start, FindNextNode destination);
     //see if node is in initial list
-    void checkCurrentNode(int cost, int x, int z, findNextNode *parent);
+    void checkCurrentNode(int cost, int x, int z, FindNextNode *parent);
     void keepOnFindingthePath();
 };
 
