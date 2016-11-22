@@ -11,14 +11,14 @@ using namespace std;
 // main function for testing
 int main(){
 	Maze maze(5); // set to any desired size
-	maze.RecursiveBacktrack(0, 0); // starts from top left corner
+	//maze.RecursiveBacktrack(0, 0); // starts from top left corner
 	maze.printMaze();
 	maze.outputMaze();
-	maze.printOutput();
 	return 0;
 }
 
 Maze::Maze(int size) {
+	srand(time(NULL));
 	this->size = size;
 	maze = new int*[size];
 	storage = new int[size * size];
@@ -35,6 +35,7 @@ Maze::Maze(int size) {
 		outStorage[i] = false;
 	for (int i = 0; i < outSize; i++)
 		output[i] = outStorage + (outSize+1) * i;
+	RecursiveBacktrack(0,0);
 }
 
 // returns the output, a grid that can be used to interpret the maze as
@@ -80,14 +81,6 @@ void Maze::printOutput(){
 }
 
 void Maze::printMaze() {
-	for(int i = 0; i < this->size; i++){
-		for(int j = 0; j < this->size; j++){
-			cout << maze[i][j] << "\t";
-		}
-		cout << endl;
-	}
-	cout << endl;
-
 	for(int x = 0; x < (size * 2); x++) {
 		cout << "_";
 	}

@@ -9,6 +9,7 @@
 #define MAZE_H_
 
 #pragma once
+#include <time.h>
 #include <iostream>
 #include <random>
 
