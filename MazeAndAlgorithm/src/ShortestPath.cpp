@@ -7,9 +7,11 @@
 
 using namespace std;
 
-ShortestPath::ShortestPath(void){
+ShortestPath::ShortestPath(Maze maze): maze(&maze){
     optimalStartingNode = false;
     //has reached the final destination
+    destinationNode = NULL;
+    startNode = NULL;
     optimalDestinationNode = false;
 }
 

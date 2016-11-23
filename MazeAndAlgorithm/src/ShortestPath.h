@@ -4,6 +4,7 @@
 
 #include "Node.h"
 #include "Vector.h"
+#include "Maze.h"
 
 using namespace std;
 
@@ -15,14 +16,14 @@ public:
     //There will be two lists in this algorithm. The first list will have all the nodes its currently checking. This list
     // will contain all the adjacent nodes to the current node. It will take the best candidate. The second
     //list would contain the nodes that we have already visited and checked
-    ShortestPath(void);
+    ShortestPath(Maze maze);
     //has start goal been initialized
     bool optimalStartingNode;
     //has reached the final destination
     bool optimalDestinationNode;
     void FindPath(Vector currentPositionofEnemy, Vector destinationPosition);
     Vector nextPositionFromList();
-
+    Maze* maze;
     void initializeInitialList(){
         initialList.clear();
     }
