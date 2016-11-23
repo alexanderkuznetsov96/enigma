@@ -23,7 +23,7 @@ public:
 	int DirX[9] = {0, 0, 0, 0, 1, 0, 0, 0, -1};	// x direction, positive is east
 	int DirY[9] = {0, -1, 1, 0, 0, 0, 0, 0, 0};	// y direction, positive is south
 	int OppD[9] = {0, S, N, 0, W, 0, 0, 0, E};	// opposite
-	Maze(int size);
+	Maze(int size, int xstart, int ystart);
 	// fills the maze using recursive backtracking
 	void RecursiveBacktrack(int startX, int startY);
 	// display the maze
@@ -32,6 +32,10 @@ public:
 	// turns the maze into a boolean array
 	bool** outputMaze();
 
+	// accessors
+	int* getStart();
+	int* getExit();
+
 private:
 	void shuffleArray(int *array, int size);
 	int size;		// dimension of the maze
@@ -39,6 +43,8 @@ private:
 	int* storage;	// storage for easy access to maze
 	bool** output;
 	bool* outStorage;
+	int start[2];	// x and y position of maze entrance
+	int exit[2];	// x and y position of maze exit
 };
 
 #endif /* MAZE_H_ */

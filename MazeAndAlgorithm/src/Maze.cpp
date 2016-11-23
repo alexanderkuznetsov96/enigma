@@ -8,8 +8,11 @@
 #include "stdlib.h"
 using namespace std;
 
-Maze::Maze(int size) {
+Maze::Maze(int size, int xstart, int ystart) {
 	srand(time(NULL));
+	start[0] = xstart;
+	start[1] = ystart;
+
 	this->size = size;
 	maze = new int*[size];
 	storage = new int[size * size];
@@ -26,7 +29,8 @@ Maze::Maze(int size) {
 		outStorage[i] = false;
 	for (int i = 0; i < outSize; i++)
 		output[i] = outStorage + (outSize+1) * i;
-	RecursiveBacktrack(0,0);
+
+	RecursiveBacktrack(xstart, ystart);
 }
 
 // returns the output, a grid that can be used to interpret the maze as
@@ -144,4 +148,10 @@ void Maze::shuffleArray(int *arr, int size) {
 	}
 }
 
+int* Maze::getStart(){
+	return start;
+}
 
+int* Maze::getExit(){
+	return exit;
+}

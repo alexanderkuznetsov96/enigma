@@ -8,7 +8,7 @@
 
 // main function for testing
 int main(){
-	Maze maze(5); // set to any desired size
+	Maze maze(5, 0, 0); // set to any desired size
 	maze.printMaze();
 	maze.outputMaze();
 	maze.printOutput();
