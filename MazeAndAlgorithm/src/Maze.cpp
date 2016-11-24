@@ -24,13 +24,13 @@ Maze::Maze(int size, int xstart, int ystart) {
 	for (int i = 0; i < size; i++)
 		maze[i] = storage + size * i;
 
-	int outSize = size * 2;
+	this->outSize = size * 2 + 1;
 	output = new bool*[outSize];
-	outStorage = new bool[(outSize+1) * outSize];
-	for (int i = 0; i < (outSize+1) * outSize; i++)
-		outStorage[i] = false;
+	outStorage = new bool[outSize * outSize];
+	for (int i = 0; i < (outSize * outSize); i++)
+		outStorage[i] = true;
 	for (int i = 0; i < outSize; i++)
-		output[i] = outStorage + (outSize+1) * i;
+		output[i] = outStorage + outSize * i;
 
 	RecursiveBacktrack(xstart, ystart);
 }
@@ -40,30 +40,20 @@ Maze::Maze(int size, int xstart, int ystart) {
 bool** Maze::outputMaze() {
 	for(int y = 0; y < size; y++){
 		output[y*2][0] = false;
+		output[y*2+1][0] = false;
+		output[y*2][size*2] = false;
+		output[y*2+1][size*2] = false;
+		output[size*2][y*2] = false;
+		output[size*2][y*2+1] = false;
 		for(int x = 0; x < size; x++){
-			if(y >= size/2){
-				if((maze[y][x] & S) !=  0)
-					output[y*2+1][x*2+1] = true;
-				if((maze[y][x] & W) !=  0)
-					output[y*2][x*2] = true;
-				if((maze[y][x] & E) !=  0)
-					output[y*2][x*2+1] = true;
-				if((maze[y][x] & N) != 0)
-					output[y*2][x*2+1] = true;
-			}
-			else{
-				if((maze[y][x] & S) !=  0)
-					output[y*2+1][x*2+1] = true;
-				if((maze[y][x] & E) !=  0)
-					output[y*2+1][x*2+1] = true;
-				if((maze[y][x] & W) !=  0)
-					output[y*2+1][x*2] = true;
-				if((maze[y][x] & N) != 0)
-					output[y*2][x*2+1] = true;
-			}
+			output[y*2][x*2] = false;
+			if((maze[y][x] & W) ==  0)
+				output[y*2+1][x*2] = false;
+			if((maze[y][x] & N) == 0)
+				output[y*2][x*2+1] = false;
 		}
-		output[y][size*2] = false;
 	}
+	output[size*2][size*2] = false;
 	return output;
 }
 
@@ -93,9 +83,9 @@ void Maze::printShortestPath()
 }
 
 void Maze::printOutput(){
-	for(int i = 0; i < size*2; i++){
+	for(int i = 0; i < size*2+1; i++){
 		for(int j = 0; j < size*2+1; j++){
-			cout << ((output[i][j])?"1":"0");
+			cout << ((output[i][j])?" ":"0");
 		}
 		cout << endl;
 	}
@@ -185,5 +175,5 @@ int* Maze::getExit(){
 
 int Maze::getOutSize()
 {
-	return size*2;
+	return outSize;
 }

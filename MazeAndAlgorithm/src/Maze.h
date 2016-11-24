@@ -41,11 +41,14 @@ public:
 
 private:
 	void shuffleArray(int *array, int size);
-	int size;		// dimension of the maze
-	int** maze;		// the pointer to the maze
-	int* storage;	// storage for easy access to maze
-	bool** output;
-	bool* outStorage;
+	int size;			// dimension of the maze
+	int** maze;			// the pointer to the maze
+	int* storage;		// storage for easy access to maze
+
+	int outSize;		// dimension of the output
+	bool** output;		// pointer to the output
+	bool* outStorage;	// storage for easy access
+
 	int start[2];	// x and y position of maze entrance
 	int exit[2];	// x and y position of maze exit
 	bool** shortestPath = nullptr;
