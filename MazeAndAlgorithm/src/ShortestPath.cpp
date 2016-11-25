@@ -11,27 +11,16 @@ ShortestPath::ShortestPath(Maze maze) : maze(maze)
 	generateMap();
 	// get start and finish locations
 	int* startPos = maze.getStart();
-	int* endPost = maze.getExit();
+	int* endPos = maze.getExit();
 	int xA, yA, xB, yB;
 	xA = startPos[0];
 	yA = startPos[1];
-	//xB = endPost[0];
-	//yB = endPost[1];
-	xB = 5;
-	yB = 5;
+	xB = endPos[0];
+	yB = endPos[1];
 
-	cout << "Map Size (X,Y): " << sizeX << "," << sizeY << endl;
-	cout << "Start: " << xA << "," << yA << endl;
-	cout << "Finish: " << xB << "," << yB << endl;
 	// get the route
-	clock_t start = clock();
 	string route = pathFind(xA, yA, xB, yB);
 	if (route == "") cout << "An empty route generated!" << endl;
-	clock_t end = clock();
-	double time_elapsed = double(end - start);
-	cout << "Time to calculate the route (ms): " << time_elapsed << endl;
-	cout << "Route:" << endl;
-	cout << route << endl << endl;
 
 	// follow the route on the map and display it 
 	if (route.length()>0)
@@ -41,7 +30,7 @@ ShortestPath::ShortestPath(Maze maze) : maze(maze)
 		int y = yA;
 		map[x][y] = 2;
 		shortestRouteArray[x][y] = true;
-		for (int i = 0; i<route.length(); i++)
+		for (unsigned int i = 0; i<route.length(); i++)
 		{
 			c = route.at(i);
 			j = atoi(&c);
@@ -52,26 +41,7 @@ ShortestPath::ShortestPath(Maze maze) : maze(maze)
 		}
 		map[x][y] = 4;
 		shortestRouteArray[x][y] = true;
-
-		// display the map with the route
-		for (int x = 0; x<sizeX; x++)
-		{
-			for (int y = 0; y<sizeY; y++)
-				if (map[x][y] == 0)
-					cout << ".";
-				else if (map[x][y] == 1)
-					cout << "O"; //obstacle
-				else if (map[x][y] == 2)
-					cout << "S"; //start
-				else if (map[x][y] == 3)
-					cout << "R"; //route
-				else if (map[x][y] == 4)
-					cout << "F"; //finish
-			cout << endl;
-		}
-		cout << endl;
 	}
-	//getchar(); // wait for a (Enter) keypress  
 }
 
 string ShortestPath::getShortestRouteString()
@@ -89,7 +59,7 @@ void ShortestPath::generateMap()
 	mazeOutput = maze.outputMaze();
 	int size = maze.getOutSize();
 	sizeX = size;
-	sizeY = size+1;
+	sizeY = size;
 	map = new int*[sizeX];
 	closed_nodes_map = new int*[sizeX]; // map of closed (tried-out) nodes
 	open_nodes_map = new int*[sizeX]; // map of open (not-yet-tried) nodes
@@ -119,7 +89,7 @@ void ShortestPath::generateMap()
 	}*/
 
 	// print map
-	cout << endl;
+	/*cout << endl;
 	cout << "Printing map to navigate: " << endl;
 	for (int i = 0; i < sizeX; i++) {
 		for (int j = 0; j < sizeY; j++) {
@@ -127,7 +97,7 @@ void ShortestPath::generateMap()
 		}
 		cout << endl;
 	}
-	cout << endl;
+	cout << endl;*/
 }
 
 string ShortestPath::pathFind(const int & xStart, const int & yStart, const int & xFinish, const int & yFinish)

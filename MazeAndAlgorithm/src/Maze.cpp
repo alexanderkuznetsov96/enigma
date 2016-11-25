@@ -25,6 +25,9 @@ Maze::Maze(int size, int xstart, int ystart) {
 		maze[i] = storage + size * i;
 
 	this->outSize = size * 2 + 1;
+	// Make the exit the opposite corner;
+	exit[0] = outSize - 2;
+	exit[1] = exit[0];
 	output = new bool*[outSize];
 	outStorage = new bool[outSize * outSize];
 	for (int i = 0; i < (outSize * outSize); i++)
@@ -73,8 +76,8 @@ void Maze::printShortestPath()
 	if (shortestPath == nullptr) {
 		getShortestPath();
 	}
-	for (int i = 0; i < size * 2; i++) {
-		for (int j = 0; j < size * 2 + 1; j++) {
+	for (int i = 0; i < outSize; i++) {
+		for (int j = 0; j < outSize; j++) {
 			cout << ((shortestPath[i][j]) ? "1" : "0");
 		}
 		cout << endl;
