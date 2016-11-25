@@ -20,7 +20,7 @@ void node::updatePriority(const int & xDest, const int & yDest)
 
 void node::updateDistanceTravelled(const int & i) // i: direction
 {
-	distanceTravelled += i % 2 == 0 ? 10 : 14;
+	distanceTravelled += 10;
 }
 
 // Estimation function for the remaining distance to the goal.
