@@ -18,6 +18,12 @@ void node::updatePriority(const int & xDest, const int & yDest)
 	priority = level + estimate(xDest, yDest) * 10; //A*
 }
 
+// give better priority to going strait instead of diagonally
+void node::nextLevel(const int & i) // i: direction
+{
+	level += (dir == 8 ? (i % 2 == 0 ? 10 : 14) : 10);
+}
+
 // Estimation function for the remaining distance to the goal.
 const int & node::estimate(const int & xDest, const int & yDest) const
 {
