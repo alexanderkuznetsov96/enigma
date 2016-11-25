@@ -134,7 +134,7 @@ string ShortestPath::pathFind(const int & xStart, const int & yStart, const int 
 		// get the current node w/ the highest priority
 		// from the list of open nodes
 		n0 = new node(pq[pqi].top().getxPos(), pq[pqi].top().getyPos(),
-			pq[pqi].top().getLevel(), pq[pqi].top().getPriority());
+			pq[pqi].top().getDistanceTravelled(), pq[pqi].top().getPriority());
 
 		x = n0->getxPos(); y = n0->getyPos();
 
@@ -175,9 +175,9 @@ string ShortestPath::pathFind(const int & xStart, const int & yStart, const int 
 				|| closed_nodes_map[xdx][ydy] == 1))
 			{
 				// generate a child node
-				m0 = new node(xdx, ydy, n0->getLevel(),
+				m0 = new node(xdx, ydy, n0->getDistanceTravelled(),
 					n0->getPriority());
-				m0->nextLevel(i);
+				m0->updateDistanceTravelled(i);
 				m0->updatePriority(xFinish, yFinish);
 
 				// if it is not in the open list then add into that

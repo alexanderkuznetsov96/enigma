@@ -14,12 +14,11 @@ public:
 	node(int xp, int yp, int d, int p);
 	int getxPos() const;
 	int getyPos() const;
-	int getLevel() const;
+	int getDistanceTravelled() const;
 	int getPriority() const;
 
 	void updatePriority(const int & xDest, const int & yDest);
-		// give better priority to going straight instead of diagonally
-	void nextLevel(const int & i); // i: direction
+	void updateDistanceTravelled(const int & i); // i: direction
 
 	// Estimation function for the remaining distance to the goal.
 	const int & estimate(const int & xDest, const int & yDest) const;
@@ -28,7 +27,7 @@ private:
 	int xPos;
 	int yPos;
 	// total distance already travelled to reach the node
-	int level;
+	int distanceTravelled;
 	// priority=level+remaining distance estimate
 	int priority;  // smaller: higher priority
 };

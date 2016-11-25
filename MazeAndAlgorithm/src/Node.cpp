@@ -5,23 +5,22 @@
 
 node::node(int xp, int yp, int d, int p)
 	{
-		xPos = xp; yPos = yp; level = d; priority = p;
+		xPos = xp; yPos = yp; distanceTravelled = d; priority = p;
 	}
 
 int node::getxPos() const { return xPos; }
 int node::getyPos() const { return yPos; }
-int node::getLevel() const { return level; }
+int node::getDistanceTravelled() const { return distanceTravelled; }
 int node::getPriority() const { return priority; }
 
 void node::updatePriority(const int & xDest, const int & yDest)
 {
-	priority = level + estimate(xDest, yDest) * 10; //A*
+	priority = distanceTravelled + estimate(xDest, yDest) * 10; //A*
 }
 
-// give better priority to going strait instead of diagonally
-void node::nextLevel(const int & i) // i: direction
+void node::updateDistanceTravelled(const int & i) // i: direction
 {
-	level += (dir == 8 ? (i % 2 == 0 ? 10 : 14) : 10);
+	distanceTravelled += i % 2 == 0 ? 10 : 14;
 }
 
 // Estimation function for the remaining distance to the goal.
