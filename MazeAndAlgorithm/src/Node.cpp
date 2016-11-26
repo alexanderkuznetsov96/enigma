@@ -15,12 +15,12 @@ int node::getPriority() const { return priority; }
 
 void node::updatePriority(const int & xDest, const int & yDest)
 {
-	priority = distanceTravelled + estimate(xDest, yDest) * 10; //A*
+	priority = distanceTravelled + estimate(xDest, yDest); //A*
 }
 
 void node::updateDistanceTravelled(const int & i) // i: direction
 {
-	distanceTravelled += 10;
+	distanceTravelled += 1;
 }
 
 // Estimation function for the remaining distance to the goal.

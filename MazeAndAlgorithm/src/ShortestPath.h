@@ -13,7 +13,7 @@ public:
 private:
 	// A-star algorithm.
 	// The route returned is a string of direction digits.
-	string pathFind(const int & xStart, const int & yStart,const int & xFinish, const int & yFinish);
+	string findPath(const int & xStart, const int & yStart,const int & xFinish, const int & yFinish);
 	Maze maze;
 	bool** mazeOutput;
 	int** map;
