@@ -103,5 +103,13 @@ int main(){
 	cout << "Time to calculate the route (ms): " << time_elapsed << endl;
 	maze7.printShortestPath();
 
+	cout << endl;
+	cout << "Testing lazy initialization (getShortestPath() of maze above): " << endl;
+	start = clock();
+	maze7.getShortestPath();
+	end = clock();
+	time_elapsed = double(end - start);
+	cout << "Time to calculate the route (ms): " << time_elapsed << endl;
+
 	return 0;
 }
