@@ -28,7 +28,7 @@ ShortestPath::ShortestPath(Maze maze) : maze(maze)
 		int directionAsInt; char directionAsC;
 		int x = xStart;
 		int y = yStart;
-		map[x][y] = 2;
+		maze_map[x][y] = 2;
 		shortestRouteArray[x][y] = true;
 		for (unsigned int i = 0; i<route.length(); i++)
 		{
@@ -36,10 +36,10 @@ ShortestPath::ShortestPath(Maze maze) : maze(maze)
 			directionAsInt = atoi(&directionAsC);
 			x = x + dx[directionAsInt];
 			y = y + dy[directionAsInt];
-			map[x][y] = 3;
+			maze_map[x][y] = 3;
 			shortestRouteArray[x][y] = true;
 		}
-		map[x][y] = 4;
+		maze_map[x][y] = 4;
 		shortestRouteArray[x][y] = true;
 	}
 }
@@ -60,19 +60,19 @@ void ShortestPath::generateMap()
 	int size = maze.getOutSize();
 	sizeX = size;
 	sizeY = size;
-	map = new int*[sizeX];
-	closed_nodes_map = new int*[sizeX]; // map of closed (tried-out) nodes
-	open_nodes_map = new int*[sizeX]; // map of open (not-yet-tried) nodes
-	dir_map = new int*[sizeX]; // map of directions
+	maze_map = new int*[sizeX];
+	nodes_closed_map = new int*[sizeX]; // map of closed (tried-out) nodes
+	nodes_open_map = new int*[sizeX]; // map of open (not-yet-tried) nodes
+	map_dir = new int*[sizeX]; // map of directions
 	shortestRouteArray = new bool*[sizeX];
 	for (int i = 0; i < sizeX; i++) {
-		map[i] = new int[sizeY];
-		closed_nodes_map[i] = new int[sizeY];
-		open_nodes_map[i] = new int[sizeY];
-		dir_map[i] = new int[sizeY];
+		maze_map[i] = new int[sizeY];
+		nodes_closed_map[i] = new int[sizeY];
+		nodes_open_map[i] = new int[sizeY];
+		map_dir[i] = new int[sizeY];
 		shortestRouteArray[i] = new bool[sizeY];
 		for (int j = 0; j < sizeY; j++) {
-			map[i][j] = mazeOutput[i][j] ? 0 : 1;
+			maze_map[i][j] = mazeOutput[i][j] ? 0 : 1;
 			shortestRouteArray[i][j] = false;
 		}
 	}
@@ -117,8 +117,8 @@ string ShortestPath::findPath(const int & xStart, const int & yStart, const int 
 	{
 		for (x = 0; x<n; x++)
 		{
-			closed_nodes_map[x][y] = 0;
-			open_nodes_map[x][y] = 0;
+			nodes_closed_map[x][y] = 0;
+			nodes_open_map[x][y] = 0;
 		}
 	}
 
@@ -126,7 +126,7 @@ string ShortestPath::findPath(const int & xStart, const int & yStart, const int 
 	node0 = new node(xStart, yStart, 0, 0);
 	node0->updatePriority(xFinish, yFinish);
 	priorityq[pqindex].push(*node0);
-	open_nodes_map[x][y] = node0->getPriority(); // mark it on the open nodes map
+	nodes_open_map[x][y] = node0->getPriority(); // mark it on the open nodes map
 
 											  // A* search
 	while (!priorityq[pqindex].empty())
@@ -139,9 +139,9 @@ string ShortestPath::findPath(const int & xStart, const int & yStart, const int 
 		x = node0->getxPos(); y = node0->getyPos();
 
 		priorityq[pqindex].pop(); // remove the node from the open list
-		open_nodes_map[x][y] = 0;
+		nodes_open_map[x][y] = 0;
 		// mark it on the closed nodes map
-		closed_nodes_map[x][y] = 1;
+		nodes_closed_map[x][y] = 1;
 
 		// quit searching when the goal state is reached
 		//if((*n0).estimate(xFinish, yFinish) == 0)
@@ -152,7 +152,7 @@ string ShortestPath::findPath(const int & xStart, const int & yStart, const int 
 			string path = "";
 			while (!(x == xStart && y == yStart))
 			{
-				j = dir_map[x][y];
+				j = map_dir[x][y];
 				c = '0' + (j + dir / 2) % dir;
 				path = c + path;
 				x += dx[j];
@@ -171,8 +171,8 @@ string ShortestPath::findPath(const int & xStart, const int & yStart, const int 
 		{
 			xdx = x + dx[i]; ydy = y + dy[i];
 
-			if (!(xdx<0 || xdx>n - 1 || ydy<0 || ydy>m - 1 || map[xdx][ydy] == 1
-				|| closed_nodes_map[xdx][ydy] == 1))
+			if (!(xdx<0 || xdx>n - 1 || ydy<0 || ydy>m - 1 || maze_map[xdx][ydy] == 1
+				|| nodes_closed_map[xdx][ydy] == 1))
 			{
 				// generate a child node
 				child0 = new node(xdx, ydy, node0->getDistanceTravelled(),
@@ -181,19 +181,19 @@ string ShortestPath::findPath(const int & xStart, const int & yStart, const int 
 				child0->updatePriority(xFinish, yFinish);
 
 				// if it is not in the open list then add into that
-				if (open_nodes_map[xdx][ydy] == 0)
+				if (nodes_open_map[xdx][ydy] == 0)
 				{
-					open_nodes_map[xdx][ydy] = child0->getPriority();
+					nodes_open_map[xdx][ydy] = child0->getPriority();
 					priorityq[pqindex].push(*child0);
 					// mark its parent node direction
-					dir_map[xdx][ydy] = (i + dir / 2) % dir;
+					map_dir[xdx][ydy] = (i + dir / 2) % dir;
 				}
-				else if (open_nodes_map[xdx][ydy]>child0->getPriority())
+				else if (nodes_open_map[xdx][ydy]>child0->getPriority())
 				{
 					// update the priority info
-					open_nodes_map[xdx][ydy] = child0->getPriority();
+					nodes_open_map[xdx][ydy] = child0->getPriority();
 					// update the parent direction info
-					dir_map[xdx][ydy] = (i + dir / 2) % dir;
+					map_dir[xdx][ydy] = (i + dir / 2) % dir;
 
 					// replace the node
 					// by emptying one pq to the other one
