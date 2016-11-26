@@ -2,6 +2,7 @@
 
 #include "Node.h"
 #include <math.h>
+#include <stdlib.h>
 
 node::node(int xp, int yp, int d, int p)
 	{
