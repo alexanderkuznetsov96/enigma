@@ -16,10 +16,10 @@ private:
 	string findPath(const int & xStart, const int & yStart,const int & xFinish, const int & yFinish);
 	Maze maze;
 	bool** mazeOutput;
-	int** map;
-	int** closed_nodes_map; // map of closed (tried-out) nodes
-	int** open_nodes_map; // map of open (not-yet-tried) nodes
-	int** dir_map; // map of directions
+	int** maze_map;
+	int** nodes_closed_map; // map of closed (tried-out) nodes
+	int** nodes_open_map; // map of open (not-yet-tried) nodes
+	int** map_dir; // map of directions
 	int sizeX;
 	int sizeY;
 	void generateMap();
